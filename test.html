@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<script src="jquery.js"></script>
+<style type="text/css">
+*{
+	margin:0;padding:0;
+}
+.wrap{
+position:absolute;
+    -webkit-user-select:​none;
+		 border:1px solid red;
+    height:auto;
+    width: 100%;
+}
+.blank{
+	width:100%;
+	height:50px;
+}
+
+.nothing{
+	height:60px;
+	margin-bottom:100px;
+}
+
+</style>
+</head>
+
+<body>
+<div class="wrap"  style="-webkit-transition-property:null;-webkit-transition:500ms linear; -webkit-transform:translate(0,50px)">
+<div class="blank"></div>
+<div class="me">
+<div class="nothing">1111</div>
+<div class="nothing">1112</div>
+<div class="nothing">1113</div>
+<div class="nothing">1114</div>
+<div class="nothing">1115</div>
+<div class="nothing">1116</div>
+<div class="nothing">1117</div>
+<div class="nothing">1118</div>
+<div class="nothing">1119</div>
+<div class="nothing">1120</div>
+<div class="nothing">1121</div>
+<div class="nothing">1123</div>
+<div class="nothing">1124</div>
+<div class="nothing">1125</div>
+<div class="nothing">1126</div>
+<div class="nothing">1127</div>
+
+</div>
+</div>
+<script>
+
+(function(){
+//	var draging = null,inzone = null,orgin=null,oheight=null,dir=null,my=null;
+	$('.wrap').css('-webkit-transform','translate(0,0px)');
+	var dheight = $(document).height()-$(window).height()-100;
+	var star = {
+		conf:{
+			draging:null,
+			inzone:null,
+			orgin:null,
+			oheight:null,
+			dir:null,
+			top:null,
+			oldtop:null,
+			my:null
+		},
+	initEvent:function(events){
+		var obj = this;
+		$.each(events,function(k,v){
+			var selector = k.split('|');	
+			$(document).on(selector[0],selector[1],function(){		
+				  if($.isFunction(obj[v])){
+					  obj[v].apply(obj,arguments);
+				  }
+			});
+		});	
+		$(window).mouseup(function(){obj.end();});
+	},
+	start:function(e){
+		this.conf.draging =$(this);
+		this.conf.orgin = e.pageY;
+	   //获取translate中的y值
+	    var reg=/\-?[0-9]+\.?[0-9]*/g ;
+	    var arr = $('.wrap').css('transform').match(reg);
+		if(arr)
+		this.conf.oheight = arr[arr.length-1];
+	},
+	move:function(e){
+		e.preventDefault();
+		if(!this.conf.draging )return;
+		$('.wrap').css('-webkit-transition','none');	
+		this.conf.my = (e.pageY-this.conf.orgin);
+		this.conf.dir = this.conf.my>0 ? 1 :0;
+		this.conf.top = parseInt(this.conf.oheight)+parseInt(this.conf.my);
+		$('.wrap').css('-webkit-transform','translate(0px,'+this.conf.top+'px)');
+	},
+	end:function(){
+		if(!this.conf.draging)return;
+		if(this.conf.dir){
+		this.goup();
+		}else{
+		this.godown();
+		}
+	},
+	godown:function(){
+		if(Math.abs(this.conf.top)>dheight){
+		  if(this.conf.my>30 || this.conf.my<-30){
+			  //dosomething
+		  }
+		  this.conf.oldtop = -dheight;
+		  this.gofresh();
+		}
+		this.conf.draging=null;
+
+	},
+	goup:function(){		
+		if(this.conf.top>0){
+		  if(this.conf.my>30 || this.conf.my<-30){
+			  //dosomething
+		  }
+		  this.conf.oldtop = 0;
+		  this.gofresh();
+		 
+		}
+		this.conf.draging=null;
+
+	},
+	gofresh:function(){
+	    $('.wrap').css('-webkit-transform','all');
+		$('.wrap').css('-webkit-transition','100ms linear');
+		$('.wrap').css('-webkit-transform','translate(0px,'+this.conf.oldtop+'px)');
+	}
+}
+star.initEvent({'mousedown|.wrap':'start','mousemove|.wrap':'move'});	
+}());
+</script>
+</body>
+</html>
