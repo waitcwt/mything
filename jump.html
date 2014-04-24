@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<style>
+.div{
+	-webkit-animation-name:'myfirst';
+	-webkit-animation-duration:200ms;
+	-webkit-animation-iteration-count:3;
+	-webkit-animation-timing-function:ease-in;
+}
+@-webkit-keyframes myfirst{
+0% {top:190px;}
+20%{top:200px;}
+70%{top:220px;}
+100%{top:190;}
+
+}
+</style>
+<script src="jquery.js"></script>
+</head>
+
+<body>
+<div style="position:absolute;top:200px;left:300px;width:30px;height:30px;background-color:#F00">
+</div>
+</body>
+<script>
+$('div').hover(function(){
+	$(this).addClass('div');
+},function(){
+	//$(this).removeClass('div');
+});
+</script>
+</html>
