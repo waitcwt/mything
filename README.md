@@ -11,9 +11,8 @@
  
 initSlider({
 			wrap:$('div'),
-                        Handle:$('.scrollArea'),
+            Handle:$('.scrollArea'),
 			selector:'li',
-			btnSelector:'li',
 			btnLeft:'.left',
 			btnRight:'.right',
 			dir:0, 方向（0，是上下；1是左右）
