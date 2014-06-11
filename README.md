@@ -7,9 +7,11 @@
 
 #slider.html实现的是一小排走马灯式的轮播
 *slider.js 实现可以定制使用参数
-{
+```javascript
+ 
+initSlider({
 			wrap:$('div'),
-      Handle:$('.scrollArea'),
+                        Handle:$('.scrollArea'),
 			selector:'li',
 			btnSelector:'li',
 			btnLeft:'.left',
@@ -18,4 +20,5 @@
 			autoPlay:true,
 			timer:5000，
 			cnt:1 (一次轮播多少个）
-	}
+	}).start();
+```
