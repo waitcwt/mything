@@ -5,7 +5,6 @@ function initSlider(option){
 			Handle:$('.scrollArea'),
 			wrap:$('div'),
 			selector:'li',
-			btnHandle:$('.btnScroll'),
 			btnSelector:'li',
 			dir:0,
 			autoPlay:true,
