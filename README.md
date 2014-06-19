@@ -15,6 +15,7 @@ initSlider({
 			selector:'li',
 			btnLeft:'.left',
 			btnRight:'.right',
+			shape:'slide' ('fade')
 			dir:0, 方向（0，是上下；1是左右）
 			autoPlay:true,
 			timer:5000，
