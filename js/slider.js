@@ -1,15 +1,14 @@
     function initSlider(option){
-        var conf = {},that = this,maxLength=0,wraplength=0,btnRight='',btnLeft='',direction='',btnHandle='',boxsize='',maxcnt=0,slideLength=0;
+        var conf = {},that = this,maxLength=0,wraplength=0,direction='',btnHandle='',boxsize='',maxcnt=0,slideLength=0;
         function slider(option){
             this.conf = $.extend({
-                wrap:$('.div1'),
-                Handle:$('.scrollArea'),
+                Wrap:$('.div1'), //最外层div
+                Handle:$('.scrollArea'),//滚动ul
                 selector:'li',
                 isbtn:false,
-                dirbtn:$('.button'),
-                btnHandle:$('.btnscroll'),
+                btnHandle:$('.btnscroll'),//控制滚动第几个按钮
                 btnselecot:'a',
-                dir:1,
+                dir:1,//1为左右 0 为上下
                 autoPlay:false,
                 timer:5000,
                 timeItd:'',
@@ -17,29 +16,40 @@
                 btnRight:'.right',
                 shape:'slide',
                 canClick:true,
+                btnshow:true,
                 current:0,
                 index:0,
                 show:1,
                 cnt:1     //一次滑动多少个
             },option);
+            if(this.conf) this.start();
         }
         slider.prototype.start= function() {
             this.calculate();
-            conf.wrap.find(conf.dirbtn).hide();
+            this.dircontrol();
             if(wraplength<maxLength){
                 this.bindEvent();
                 if(this.conf.autoPlay){
                     this.conf.shape==='slide' && (maxcnt%conf.cnt===0) ? this.copyDom() :'';
                     this.loop();
                 }else{
-                    conf.wrap.find(conf.dirbtn).find(conf.btnLeft).hide();
+                    conf.Wrap.find(conf.btnLeft).hide();
                 }
+            }
+        };
+        slider.prototype.dircontrol = function(){
+            var $button = $('<span class="button" style="z-index:999"></span>');
+            $button.append(conf.Wrap.find('.left'));
+            $button.append(conf.Wrap.find('.right'));
+            conf.Wrap.append($button);
+            if(!conf.btnshow){
+                conf.Wrap.find('.button').hide();
             }
         };
         slider.prototype.loop = function(){
             if(this.conf.autoPlay){
                 conf.timeItd = setTimeout(function(){
-                    that.concrol(true);
+                    that.control(true);
                     that.loop();
                 },conf.timer)
             }
@@ -49,7 +59,7 @@
                 clearTimeout(this.conf.timeItd);
         };
 
-        slider.prototype.concrol= function(flag){
+        slider.prototype.control= function(flag){
             if(!conf.canClick) return;
             conf.canClick = false;
             flag ?  this.conf.current++ : this.conf.current --;
@@ -98,6 +108,8 @@
             }
         };
         slider.prototype.noAuto= function(slide){
+            var btnLeft = conf.Wrap.find(conf.btnLeft);
+            var btnRight = conf.Wrap.find(conf.btnRight);
             if(conf.autoPlay){
                 //如果是自动轮播，但是轮播个数不能被总个数整除
                 if(conf.current>Math.ceil(maxcnt/conf.show)-1){
@@ -132,7 +144,7 @@
             conf = this.conf;that = this;  
             slideLength = conf.dir ? conf.Handle.find(conf.selector).outerWidth(true) : conf.Handle.find(conf.selector).outerHeight(true);
             maxcnt = Math.ceil(conf.Handle.find(conf.selector).length);
-            wraplength = conf.dir ? conf.wrap.width() : conf.wrap.height();
+            wraplength = conf.dir ? conf.Wrap.width() : conf.Wrap.height();
             direction = conf.dir ? 'marginLeft' :'marginTop';
             boxsize = conf.dir ? 'width' :'height';
             conf.Handle.css(boxsize,maxcnt*slideLength+'px');
@@ -140,14 +152,14 @@
             maxLength = conf.dir ? conf.Handle.outerWidth(true):conf.Handle.outerHeight(true);
         };
         slider.prototype.bindEvent= function(){
-            btnLeft = conf.wrap.find(conf.btnLeft);
-            btnRight = conf.wrap.find(conf.btnRight);
-            btnHandle = conf.wrap.find(conf.btnHandle);
-            btnLeft.click(function(){
-                that.concrol(false)
+            btnHandle = conf.Wrap.find(conf.btnHandle);
+            conf.Wrap.on('click',conf.btnLeft,function(){
+                if($(this).find(conf.btnRight).css('display')!='none')
+                    that.control(false)
             });
-            btnRight.click(function(){
-                that.concrol(true)
+            conf.Wrap.on('click',conf.btnRight,function(){
+                if($(this).find(conf.btnRight).css('display')!='none')
+                    that.control(true)
             });
             btnHandle.find(conf.btnselecot).click(function(){
                 if(!conf.canClick) return;
@@ -158,11 +170,11 @@
                     conf.shape ==='slide' ?  that.jumpscroll(conf.current) : that.fade(conf.current);
                 }
             });
-            conf.wrap.hover(function(){
+            conf.Wrap.hover(function(){
                 that.stop();
-                conf.wrap.find(conf.dirbtn).show();
+               conf.btnshow ? '' : conf.Wrap.find('.button').show();
             },function(){
-                conf.wrap.find(conf.dirbtn).hide();11
+                conf.btnshow ? '' : conf.Wrap.find('.button').hide();
                 that.loop();
             });
         };
