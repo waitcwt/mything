@@ -11,7 +11,7 @@
  
 initSlider({
 			Wrap:$('div'),
-            Handle:$('.scrollArea'),
+            		Handle:$('.scrollArea'),
 			selector:'li',
 			btnLeft:'.left',
 			btnRight:'.right',
