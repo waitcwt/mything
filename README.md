@@ -10,13 +10,13 @@
 ```javascript
  
 initSlider({
-			Wrap:'div',
-            		Handle:'.scrollArea',
+			Wrap:$('div'),
+            		Handle:$('.scrollArea'),
 			selector:'li',
 			btnLeft:'.left',
 			btnRight:'.right',
 			isbtn:false,
-			btnHandle:'.btnscroll',
+			btnHandle:$('.btnscroll'),
 			btnselector:'a',
 			shape:'slide' ('fade')
 			btnshow:true,（左右按钮一直显示，false是hover上去才显示）
